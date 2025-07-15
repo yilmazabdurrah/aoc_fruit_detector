@@ -32,6 +32,7 @@ rosdep install -r -y -i --from-paths .
 
 # Install detectron2 in editable mode
 
+python3 -m pip install torch
 python3 -m pip install -e detectron2
 
 echo "Setup complete."
