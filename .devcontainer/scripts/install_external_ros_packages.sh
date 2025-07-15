@@ -3,6 +3,14 @@
 # Exit immediately if a command exits with a non-zero status and enable debug mode for verbose output
 set -e -x
 
+# Deactivate virtual environment to use system Python and avoid conflicts
+# The base image has a virtual environment active in /opt/venv that needs to be deactivated
+unset VIRTUAL_ENV
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PYTHONPATH=""
+
+source /opt/ros/humble/setup.bash
+
 # Update rosdep database to ensure all dependencies are up-to-date
 rosdep update
 sudo apt-get update 
@@ -23,11 +31,7 @@ vcs import < ${WS}/src/repos/external.repos
 rosdep install -r -y -i --from-paths .
 
 # Install detectron2 in editable mode
-# Deactivate virtual environment to use system Python and avoid conflicts
-# The base image has a virtual environment active in /opt/venv that needs to be deactivated
-unset VIRTUAL_ENV
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-export PYTHONPATH=""
-sudo -E python3 -m pip install -e detectron2
+
+python3 -m pip install -e detectron2
 
 echo "Setup complete."
