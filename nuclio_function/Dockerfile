@@ -23,14 +23,15 @@ RUN apt-get update && apt-get install -y \
 
 # Create workspace for AOC messages
 WORKDIR /opt/ros_ws
-COPY ../CMakeLists.txt ./src/aoc_fruit_detector/
-COPY ../package.xml ./src/aoc_fruit_detector/
-COPY ../msg ./src/aoc_fruit_detector/msg/
+RUN mkdir -p src/aoc_fruit_detector
+
+# Copy package files for building messages
+COPY ../CMakeLists.txt src/aoc_fruit_detector/
+COPY ../package.xml src/aoc_fruit_detector/
+COPY ../msg src/aoc_fruit_detector/msg/
 
 # Build the AOC message package
-RUN . /opt/ros/humble/setup.sh && \
-    colcon build --packages-select aoc_fruit_detector && \
-    . install/setup.sh
+RUN bash -c "source /opt/ros/humble/setup.bash && colcon build --packages-select aoc_fruit_detector"
 
 # Set working directory for function
 WORKDIR /opt/nuclio

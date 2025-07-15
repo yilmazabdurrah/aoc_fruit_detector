@@ -7,7 +7,33 @@ the annotation format expected by CVAT.
 
 import logging
 from typing import List, Dict, Any
-from aoc_fruit_detector.msg import FruitInfoArray, FruitInfoMessage
+
+# Try to import ROS2 messages, use mock classes if not available
+try:
+    from aoc_fruit_detector.msg import FruitInfoArray, FruitInfoMessage
+except ImportError:
+    # Mock classes for testing without ROS2
+    class FruitInfoMessage:
+        def __init__(self):
+            self.fruit_id = 0
+            self.fruit_type = ""
+            self.confidence = 0.0
+            self.bbox = []
+            self.ripeness_category = ""
+            self.ripeness_level = 0.0
+            self.area = 0.0
+            self.volume = 0.0
+            self.weight = 0.0
+            self.occlusion_level = 0.0
+            self.pomological_class = ""
+            self.edible_plant_part = ""
+            self.fruit_variety = ""
+            self.fruit_quality = ""
+            self.mask2d = []
+    
+    class FruitInfoArray:
+        def __init__(self):
+            self.fruits = []
 
 logger = logging.getLogger(__name__)
 

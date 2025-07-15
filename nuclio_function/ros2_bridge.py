@@ -5,20 +5,52 @@ This module handles the ROS2 communication for publishing images to the
 fruit detector and receiving detection results.
 """
 
-import rclpy
-from rclpy.node import Node
-from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
-from rclpy.executors import SingleThreadedExecutor
-import threading
-import time
 import logging
 from typing import Optional, List
 import numpy as np
 import cv2
+import threading
+import time
 
-from sensor_msgs.msg import Image
-from aoc_fruit_detector.msg import FruitInfoArray
-from cv_bridge import CvBridge
+# Try to import ROS2 dependencies
+try:
+    import rclpy
+    from rclpy.node import Node
+    from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
+    from rclpy.executors import SingleThreadedExecutor
+    from sensor_msgs.msg import Image
+    from cv_bridge import CvBridge
+    
+    # Try to import AOC messages, with fallback
+    try:
+        from aoc_fruit_detector.msg import FruitInfoArray
+    except ImportError:
+        # Create mock for development/testing
+        class FruitInfoArray:
+            def __init__(self):
+                self.fruits = []
+    
+    ROS2_AVAILABLE = True
+except ImportError as e:
+    logging.warning(f"ROS2 not available: {e}")
+    ROS2_AVAILABLE = False
+    
+    # Mock classes for testing without ROS2
+    class Node:
+        def __init__(self, name): pass
+        def create_publisher(self, *args, **kwargs): return None
+        def create_subscription(self, *args, **kwargs): return None
+        def get_clock(self): return MockClock()
+    
+    class MockClock:
+        def now(self): return MockTime()
+    
+    class MockTime:
+        def to_msg(self): return None
+    
+    class FruitInfoArray:
+        def __init__(self):
+            self.fruits = []
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +60,9 @@ class ROS2Bridge(Node):
     """
     
     def __init__(self):
+        if not ROS2_AVAILABLE:
+            raise RuntimeError("ROS2 not available - cannot initialize bridge")
+            
         super().__init__('nuclio_fruit_detector_bridge')
         
         self.cv_bridge = CvBridge()
@@ -155,6 +190,9 @@ def initialize_ros2():
     """
     Initialize ROS2 if not already initialized.
     """
+    if not ROS2_AVAILABLE:
+        raise RuntimeError("ROS2 not available")
+        
     if not rclpy.ok():
         logger.info("Initializing ROS2")
         rclpy.init()
