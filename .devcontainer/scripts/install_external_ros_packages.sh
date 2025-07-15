@@ -22,8 +22,11 @@ vcs import < ${WS}/src/repos/external.repos
 # The '-y' flag automatically answers "yes" to any prompts
 rosdep install -r -y -i --from-paths .
 
-# Install detectron2 as root to ensure torch is accessible during setup
-# This needs to be done as root because the original torch installation was done as root
-sudo python3 -m pip install -e detectron2
+# Install PyTorch in user context to ensure it's available for detectron2 setup
+# Using the same versions and CUDA support as configured in the Docker build
+python3 -m pip install torch==2.0.0 torchvision==0.15.1 --index-url https://download.pytorch.org/whl/cu118
+
+# Install detectron2 in editable mode
+python3 -m pip install -e detectron2
 
 echo "Setup complete."
