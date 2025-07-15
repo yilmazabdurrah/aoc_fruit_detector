@@ -23,7 +23,11 @@ vcs import < ${WS}/src/repos/external.repos
 rosdep install -r -y -i --from-paths .
 
 # Install detectron2 in editable mode
-# Use sudo to access the root-installed PyTorch packages during setup
-sudo python3 -m pip install -e detectron2
+# Deactivate virtual environment to use system Python and avoid conflicts
+# The base image has a virtual environment active in /opt/venv that needs to be deactivated
+unset VIRTUAL_ENV
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+export PYTHONPATH=""
+sudo -E python3 -m pip install -e detectron2
 
 echo "Setup complete."
