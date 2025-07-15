@@ -22,7 +22,8 @@ vcs import < ${WS}/src/repos/external.repos
 # The '-y' flag automatically answers "yes" to any prompts
 rosdep install -r -y -i --from-paths .
 
-# Install Python dependencies for the ultralytics_ros package
-python3 -m pip install -e detectron2
+# Install detectron2 as root to ensure torch is accessible during setup
+# This needs to be done as root because the original torch installation was done as root
+sudo python3 -m pip install -e detectron2
 
 echo "Setup complete."
