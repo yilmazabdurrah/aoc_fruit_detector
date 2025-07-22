@@ -6,9 +6,12 @@
 	// Define the container name for easy identification
 	"name": "L-CAS Humble CUDA-OpenGL Devcontainer",
 	
-	// Specify the Docker Compose file(s) required to set up the dev container
-	"dockerComposeFile": ["../docker-compose.yml"],
-	"service": "fruit_detector",  // Define the main service to use in the container
+	// Use Dockerfile directly instead of docker-compose
+	"build": {
+		"dockerfile": "./Dockerfile",
+		"context": "..",
+		"target": "final"
+	},
 	"workspaceFolder": "/home/ros/fruit_detector_ws/",  // Path to the workspace within the container
 
 	// Forward specific ports from the container to the host machine
@@ -32,7 +35,28 @@
 	
 	"remoteUser": "ros",  // Set the default user inside the container
 	"updateRemoteUserUID": true,  // Align container user UID with host user for permission consistency
-	"shutdownAction": "stopCompose",  // Gracefully stop the Compose environment on shutdown
+	
+	// Container runtime configuration
+	"runArgs": [
+		"--cap-add=NET_ADMIN",  // Add network admin capabilities
+	],
+	
+	// Container environment variables
+	"containerEnv": {
+		"HOST_USER": "${localEnv:USER}",
+		"HOST_HOSTNAME": "${localEnv:HOSTNAME}"
+	},
+	
+	// Mount additional volumes
+	"mounts": [
+		"source=/etc/timezone,target=/etc/timezone,type=bind,readonly",
+		"source=/etc/localtime,target=/etc/localtime,type=bind,readonly",
+		"source=/media,target=/media,type=bind"
+	],
+	
+	// Initialize command to set up networking
+	"initializeCommand": "echo 'Setting up devcontainer...'",
+	"postStartCommand": "bash -c 'sudo ifconfig lo multicast; sudo route add -net 224.0.0.0 netmask 240.0.0.0 dev lo'",
 
 	// VS Code customizations: Install specific extensions on container startup
 	"customizations": {
@@ -50,9 +74,7 @@
 	},
 
 	// Define minimum requirements for the host machine when running this container
-	// "hostRequirements": {
-	// 	"gpu": "optional",  // GPU support is optional, useful for CUDA if available
-	// 	"cpus": 2,  // Minimum 2 CPU cores recommended
-	// 	"memory": "8gb"  // Minimum 8GB RAM recommended
-	// }
+	"hostRequirements": {
+		"gpu": "optional",  // GPU support is optional, useful for CUDA if available
+	}
 }

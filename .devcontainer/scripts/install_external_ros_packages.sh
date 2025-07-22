@@ -12,7 +12,7 @@ export PYTHONPATH=""
 source /opt/ros/humble/setup.bash
 
 # Update rosdep database to ensure all dependencies are up-to-date
-rosdep update
+rosdep update --rosdistro ${ROS_DISTRO}
 sudo apt-get update 
 
 # Navigate to the src directory of the current workspace
@@ -33,6 +33,7 @@ rosdep install -r -y -i --from-paths .
 # Install detectron2 in editable mode
 
 #python3 -m pip install torch
-python3 -m pip install detectron2
+sudo pip install torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu118
+sudo python -m pip install 'git+https://github.com/facebookresearch/detectron2.git@754469e176b224d17460612bdaa2cb8112b04cd9'
 
 echo "Setup complete."
