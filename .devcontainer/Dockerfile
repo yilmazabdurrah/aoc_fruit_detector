@@ -74,8 +74,8 @@ USER $USER
 
 # Build the workspace
 WORKDIR ${COLCON_WS}
-RUN . /opt/ros/${ROS_DISTRO}/setup.bash && \
-    colcon build --merge-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+RUN bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash; \
+    colcon build --merge-install --cmake-args -DCMAKE_BUILD_TYPE=Release"
 
 # Source the workspace in the entrypoint
 RUN echo "source ${COLCON_WS}/install/setup.bash" >> ~/.bashrc
