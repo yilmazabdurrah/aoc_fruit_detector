@@ -1,16 +1,17 @@
 Panels:
   - Class: rviz_common/Displays
-    Help Height: 78
+    Help Height: 0
     Name: Displays
     Property Tree Widget:
       Expanded:
         - /Global Options1
         - /Status1
         - /Image1
-        - /TF1
+        - /MarkerArray1
+        - /MarkerArray1/Namespaces1
         - /TF1/Frames1
       Splitter Ratio: 0.5
-    Tree Height: 92
+    Tree Height: 170
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -33,7 +34,7 @@ Visualization Manager:
   Class: ""
   Displays:
     - Alpha: 0.5
-      Cell Size: 1
+      Cell Size: 0.019999999552965164
       Class: rviz_default_plugins/Grid
       Color: 160; 160; 164
       Enabled: true
@@ -47,7 +48,7 @@ Visualization Manager:
         Y: 0
         Z: 0
       Plane: XY
-      Plane Cell Count: 10
+      Plane Cell Count: 100
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz_default_plugins/Image
@@ -62,7 +63,7 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /zed/zed_node/rgb_raw/image_raw_color
+        Value: /zed/zed_node/rgb/image_rect_color
       Value: true
     - Class: rviz_default_plugins/Image
       Enabled: true
@@ -82,7 +83,8 @@ Visualization Manager:
       Enabled: true
       Name: MarkerArray
       Namespaces:
-        fruits: true
+        fruit_centroids: true
+        fruits: false
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -95,12 +97,10 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        flir_camera:
-          Value: false
         panda_link0:
           Value: false
         zed_camera_center:
-          Value: false
+          Value: true
         zed_camera_link:
           Value: false
         zed_imu_link:
@@ -119,22 +119,23 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        zed_camera_link:
-          zed_camera_center:
-            zed_left_camera_frame:
-              zed_imu_link:
-                {}
-              zed_left_camera_optical_frame:
-                {}
-            zed_right_camera_frame:
-              zed_right_camera_optical_frame:
-                {}
+        panda_link0:
+          zed_camera_link:
+            zed_camera_center:
+              zed_left_camera_frame:
+                zed_imu_link:
+                  {}
+                zed_left_camera_optical_frame:
+                  {}
+              zed_right_camera_frame:
+                zed_right_camera_optical_frame:
+                  {}
       Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: zed_left_camera_optical_frame
+    Fixed Frame: zed_camera_center
     Frame Rate: 30
   Name: root
   Tools:
@@ -177,7 +178,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 2.1567115783691406
+      Distance: 1.2933698892593384
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -192,10 +193,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4647972583770752
+      Pitch: 1.3947967290878296
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.7654006481170654
+      Yaw: 3.0804028511047363
     Saved: ~
 Window Geometry:
   Displays:

@@ -29,6 +29,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 # Install Python scripts
 install(PROGRAMS
   scripts/fruit_detection.py
+  scripts/fruit_tracking.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

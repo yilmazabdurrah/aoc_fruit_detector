@@ -13,11 +13,11 @@ def generate_launch_description():
     package_share_directory = get_package_share_directory('aoc_fruit_detector')
 
     # Path to the fruit_detection.py script in the installed directory
-    fruit_detection_script_installed = os.path.join(
+    fruit_tracking_script_installed = os.path.join(
         package_prefix,
         'lib',
         'aoc_fruit_detector',
-        'fruit_detection.py'
+        'fruit_tracking.py'
     )
 
     rviz_config_file = os.path.join(
@@ -36,12 +36,12 @@ def generate_launch_description():
     )
 
     # Run the Python script with the -O optimization flag
-    fruit_detection_node = ExecuteProcess(
-        cmd=['python3', '-O', fruit_detection_script_installed,
+    fruit_tracking_node = ExecuteProcess(
+        cmd=['python3', '-O', fruit_tracking_script_installed,
             '--ros-args',
             '--params-file', config_ros_params,  # Pass the parameters file
             '--config-file', config_non_ros_params,  # Pass the config file
-            '--remap', '/camera/image_raw:=/zed/zed_node/rgb_raw/image_raw_color', # /zed/zed_node/rgb/image_rect_color or /flir_camera/image_raw or /front_camera/image_raw
+            '--remap', '/camera/image_raw:=/zed/zed_node/rgb/image_rect_color', # /zed/zed_node/rgb_raw/image_raw_color or /flir_camera/image_raw or /front_camera/image_raw
             '--remap', '/camera/depth:=/zed/zed_node/depth/depth_registered', # /zed/zed_node/depth/depth_registered or /front_camera/depth
             '--remap', '/camera/camera_info:=/zed/zed_node/rgb/camera_info' # /flir_camera/camera_info or /zed/zed_node/rgb_raw/camera_info or /zed/zed_node/rgb/camera_info
             ],
@@ -65,7 +65,7 @@ def generate_launch_description():
         arguments = ["0.2", "-0.5", "1.0", "1.5707", "1.5707", "1.5707", "panda_link0", "zed_camera_link"] )
 
     return LaunchDescription([
-        fruit_detection_node,
+        fruit_tracking_node,
         static_transform_publisher_,
         rviz_node
     ])
